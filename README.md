@@ -6,7 +6,8 @@ To run this app, you should:
     ```shell
    npm i
    ```
-2. Run app
+2. Copy envs from `.env.example` to `.env` file and modify them as necessary
+3. Run app
     ```shell
    npm run start
    ```
