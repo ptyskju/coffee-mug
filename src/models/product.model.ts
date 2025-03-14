@@ -1,6 +1,7 @@
-import mongoose, {Schema} from "mongoose";
+import mongoose, { ObjectId, Schema, Document } from 'mongoose';
 
-export interface Product {
+export interface Product extends Document {
+  _id: ObjectId;
   name: string;
   description: string;
   price: number;
