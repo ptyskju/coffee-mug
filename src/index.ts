@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import { connectDB } from './config/database';
 import productRoutes from './routes/product.routes';
+import { errorHandler } from './errors/error.middleware';
 
 const app = express();
 app.use(express.json());
@@ -12,6 +13,8 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/products', productRoutes);
+
+app.use(errorHandler);
 
 async function init() {
   try {

@@ -1,1 +1,5 @@
-export class ForbiddenError extends Error {}
+import { ApplicationError } from './application-error';
+
+export class ForbiddenError extends ApplicationError {
+  public readonly statusCode = 403;
+}
