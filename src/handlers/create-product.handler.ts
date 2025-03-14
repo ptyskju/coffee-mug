@@ -8,6 +8,6 @@ export class CreateProductHandler {
   constructor(private readonly productRepository: ProductRepository) {}
 
   execute(createProductCommand: CreateProductCommand): Promise<Product> {
-    return this.productRepository.create(createProductCommand.input);
+    return this.productRepository.create(createProductCommand);
   }
 }
