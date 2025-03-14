@@ -1,3 +1,3 @@
-export class GetProductsQuery {
-  constructor(public readonly limit: number | undefined) {}
-}
+export type GetProductsQuery = {
+  readonly limit: number | undefined;
+};

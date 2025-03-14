@@ -1,5 +1,5 @@
 import { Product, ProductModel } from '../models/product.model';
-import { ObjectId } from 'mongoose';
+import { ObjectId } from 'mongodb';
 
 export class ProductRepository {
   create(product: Product): Promise<Product> {
@@ -8,5 +8,9 @@ export class ProductRepository {
 
   findAll(limit?: number): Promise<Product[]> {
     return ProductModel.find({}, null, { limit });
+  }
+
+  findOne(id: ObjectId): Promise<Product | null> {
+    return ProductModel.findOne(id);
   }
 }
