@@ -1,6 +1,6 @@
-import { ProductRepository } from '../repositories/product.repository';
-import { CreateProductCommand } from '../commands/create-product.command';
-import { Product } from '../models/product.model';
+import { ProductRepository } from '../../repositories/product.repository';
+import { CreateProductCommand } from '../../commands/create-product.command';
+import { Product } from '../../models/product.model';
 import { injectable } from 'tsyringe';
 
 @injectable()

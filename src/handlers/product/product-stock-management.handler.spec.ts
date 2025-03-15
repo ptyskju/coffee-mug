@@ -1,15 +1,15 @@
 import { describe } from 'node:test';
 import { ProductStockManagementHandler } from './product-stock-management.handler';
-import { ProductRepository } from '../repositories/product.repository';
-import { ProductStockManagementCommand } from '../commands/product-stock-management.command';
+import { ProductRepository } from '../../repositories/product.repository';
+import { ProductStockManagementCommand } from '../../commands/product-stock-management.command';
 import { ObjectId } from 'mongodb';
-import { ProductModel } from '../models/product.model';
-import { NotFoundError } from '../errors/not-found.error';
-import { ForbiddenError } from '../errors/forbidden.error';
-import { NoErrorThrownError } from '../test/utils/error';
+import { ProductModel } from '../../models/product.model';
+import { NotFoundError } from '../../errors/not-found.error';
+import { ForbiddenError } from '../../errors/forbidden.error';
+import { NoErrorThrownError } from '../../test/utils/error';
 
-jest.mock('../repositories/product.repository');
-jest.mock('../models/product.model');
+jest.mock('../../repositories/product.repository');
+jest.mock('../../models/product.model');
 
 describe(ProductStockManagementHandler.name, () => {
   let handler: ProductStockManagementHandler;

@@ -1,8 +1,8 @@
 import { injectable } from 'tsyringe';
-import { ProductRepository } from '../repositories/product.repository';
-import { ProductStockManagementCommand } from '../commands/product-stock-management.command';
-import { NotFoundError } from '../errors/not-found.error';
-import { ForbiddenError } from '../errors/forbidden.error';
+import { ProductRepository } from '../../repositories/product.repository';
+import { ProductStockManagementCommand } from '../../commands/product-stock-management.command';
+import { NotFoundError } from '../../errors/not-found.error';
+import { ForbiddenError } from '../../errors/forbidden.error';
 
 @injectable()
 export class ProductStockManagementHandler {

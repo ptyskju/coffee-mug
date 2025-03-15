@@ -13,3 +13,32 @@ export const restockProductValidators: ValidationChain[] = [
     .withMessage('Restock is has to be positive integer')
     .toInt(),
 ];
+
+export const singleProductValidators: ValidationChain[] = [
+  body('name')
+    .notEmpty()
+    .withMessage('Name is required')
+    .escape()
+    .trim()
+    .isLength({ min: 1, max: 50 })
+    .withMessage('Name has to be a string between 1 to 50 chars'),
+  body('description')
+    .notEmpty()
+    .withMessage('Description is required')
+    .escape()
+    .trim()
+    .isLength({ min: 1, max: 50 })
+    .withMessage('Description has to be a string between 1 to 50 chars'),
+  body('price')
+    .notEmpty()
+    .withMessage('Price is required')
+    .isFloat({ min: 1 })
+    .withMessage('Price has to be a positive number')
+    .toFloat(),
+  body('stock')
+    .notEmpty()
+    .withMessage('Stock is required')
+    .isInt({ min: 1 })
+    .withMessage('Stock has to be a positive number')
+    .toInt(),
+];
