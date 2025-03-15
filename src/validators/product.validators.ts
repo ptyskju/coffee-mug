@@ -1,4 +1,5 @@
 import { body, param, ValidationChain } from 'express-validator';
+import { ProductCategory } from '../shared/product-category.enum';
 
 export const restockProductValidators: ValidationChain[] = [
   param('id')
@@ -41,4 +42,12 @@ export const singleProductValidators: ValidationChain[] = [
     .isInt({ min: 1 })
     .withMessage('Stock has to be a positive number')
     .toInt(),
+  body('category')
+    .notEmpty()
+    .withMessage('Category is required')
+    .isString()
+    .custom((value) => Object.values(ProductCategory).includes(value))
+    .withMessage(
+      `Category should be one of ${JSON.stringify(Object.values(ProductCategory))}`,
+    ),
 ];
