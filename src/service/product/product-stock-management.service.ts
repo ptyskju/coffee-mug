@@ -1,11 +1,11 @@
-import { injectable } from 'tsyringe';
 import { ProductRepository } from '../../repositories/product.repository';
 import { ProductStockManagementCommand } from '../../commands/product-stock-management.command';
-import { NotFoundError } from '../../errors/not-found.error';
 import { ForbiddenError } from '../../errors/forbidden.error';
+import { NotFoundError } from '../../errors/not-found.error';
+import { injectable } from 'tsyringe';
 
 @injectable()
-export class ProductStockManagementHandler {
+export class ProductStockManagementService {
   constructor(private readonly productRepository: ProductRepository) {}
 
   public async increaseStock({

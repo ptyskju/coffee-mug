@@ -1,5 +1,4 @@
 import { describe } from 'node:test';
-import { ProductStockManagementHandler } from './product-stock-management.handler';
 import { ProductRepository } from '../../repositories/product.repository';
 import { ProductStockManagementCommand } from '../../commands/product-stock-management.command';
 import { ObjectId } from 'mongodb';
@@ -7,12 +6,13 @@ import { ProductModel } from '../../models/product.model';
 import { NotFoundError } from '../../errors/not-found.error';
 import { ForbiddenError } from '../../errors/forbidden.error';
 import { NoErrorThrownError } from '../../test/utils/error';
+import { ProductStockManagementService } from './product-stock-management.service';
 
 jest.mock('../../repositories/product.repository');
 jest.mock('../../models/product.model');
 
-describe(ProductStockManagementHandler.name, () => {
-  let handler: ProductStockManagementHandler;
+describe(ProductStockManagementService.name, () => {
+  let handler: ProductStockManagementService;
   let productRepository: jest.Mocked<ProductRepository>;
 
   beforeEach(() => {
@@ -21,7 +21,7 @@ describe(ProductStockManagementHandler.name, () => {
     productRepository =
       new ProductRepository() as jest.Mocked<ProductRepository>;
 
-    handler = new ProductStockManagementHandler(productRepository);
+    handler = new ProductStockManagementService(productRepository);
   });
 
   describe('increaseStock', () => {

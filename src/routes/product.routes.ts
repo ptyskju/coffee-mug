@@ -3,7 +3,6 @@ import { container } from 'tsyringe';
 import { GetProductsHandler } from '../handlers/product/get-products.handler';
 import { CreateProductHandler } from '../handlers/product/create-product.handler';
 import { Request } from 'express-serve-static-core';
-import { ProductStockManagementHandler } from '../handlers/product/product-stock-management.handler';
 import { ObjectId } from 'mongodb';
 import { Product } from '../models/product.model';
 import { validate } from '../errors/error.middleware';
@@ -13,11 +12,16 @@ import {
   singleProductValidators,
 } from '../validators/product.validators';
 import { listAll } from '../validators/global';
+import { IncreaseProductStockHandler } from '../handlers/product/increase-product-stock.handler';
+import { DecreaseProductStockHandler } from '../handlers/product/decrease-product-stock.handler';
 
 const getProductsHandler = container.resolve(GetProductsHandler);
 const createProductHandler = container.resolve(CreateProductHandler);
-const productStockManagementHandler = container.resolve(
-  ProductStockManagementHandler,
+const increaseProductStockHandler = container.resolve(
+  IncreaseProductStockHandler,
+);
+const decreaseProductStockHandler = container.resolve(
+  DecreaseProductStockHandler,
 );
 const router = Router();
 
@@ -69,7 +73,7 @@ router.post(
     const restockValue = req.body.restock;
 
     try {
-      await productStockManagementHandler.increaseStock({
+      await increaseProductStockHandler.execute({
         productId: new ObjectId(id),
         stockChange: restockValue,
       });
@@ -93,7 +97,7 @@ router.post(
     const restockValue = req.body.restock;
 
     try {
-      await productStockManagementHandler.decreaseStock({
+      await decreaseProductStockHandler.execute({
         productId: new ObjectId(id),
         stockChange: restockValue,
       });
