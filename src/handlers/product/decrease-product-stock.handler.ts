@@ -11,8 +11,9 @@ export class DecreaseProductStockHandler {
   execute(
     productStockManagementCommand: ProductStockManagementCommand,
   ): Promise<void> {
-    return this.productStackManager.decreaseStock(
-      productStockManagementCommand,
-    );
+    return this.productStackManager.decreaseStock({
+      product: productStockManagementCommand.productId,
+      stockChange: productStockManagementCommand.stockChange,
+    });
   }
 }

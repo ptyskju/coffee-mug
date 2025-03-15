@@ -1,40 +1,38 @@
 import { ProductRepository } from '../../repositories/product.repository';
-import { ProductStockManagementCommand } from '../../commands/product-stock-management.command';
 import { ForbiddenError } from '../../errors/forbidden.error';
 import { NotFoundError } from '../../errors/not-found.error';
 import { injectable } from 'tsyringe';
+import { Product } from '../../models/product.model';
+import { ObjectId } from 'mongodb';
+
+type ProductStockManagementInput = {
+  product: ObjectId | Product;
+  stockChange: number;
+};
 
 @injectable()
 export class ProductStockManagementService {
   constructor(private readonly productRepository: ProductRepository) {}
 
   public async increaseStock({
-    productId,
+    product,
     stockChange,
-  }: ProductStockManagementCommand): Promise<void> {
+  }: ProductStockManagementInput): Promise<void> {
     if (stockChange < 0) {
       throw new ForbiddenError('Stock change cannot be negative');
     }
 
-    const product = await this.productRepository.findOne(productId);
-
-    if (!product) {
-      throw new NotFoundError('Product not found');
-    }
+    product = await this.getProduct(product);
 
     product.stock += stockChange;
     await product.save();
   }
 
   public async decreaseStock({
-    productId,
+    product,
     stockChange,
-  }: ProductStockManagementCommand): Promise<void> {
-    const product = await this.productRepository.findOne(productId);
-
-    if (!product) {
-      throw new NotFoundError('Product not found');
-    }
+  }: ProductStockManagementInput): Promise<void> {
+    product = await this.getProduct(product);
 
     stockChange = Math.abs(stockChange);
 
@@ -46,5 +44,20 @@ export class ProductStockManagementService {
 
     product.stock -= stockChange;
     await product.save();
+  }
+
+  private async getProduct(
+    productIdOrModel: Product | ObjectId,
+  ): Promise<Product> {
+    if (!(productIdOrModel instanceof ObjectId)) {
+      return productIdOrModel;
+    }
+
+    const product = await this.productRepository.findOne(productIdOrModel);
+
+    if (!product) {
+      throw new NotFoundError('Product not found');
+    }
+    return product;
   }
 }
