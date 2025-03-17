@@ -1,5 +1,5 @@
 import { OrderCalculationsParams } from '../type';
-import { DiscountCalculatorInterface } from './discount-calculator.interface';
+import { PriceCalculatorInterface } from '../price-calculator.interface';
 
 const DISCOUNT_BY_VOLUME = {
   default: 1,
@@ -8,7 +8,7 @@ const DISCOUNT_BY_VOLUME = {
   high: 0.7,
 };
 
-export class VolumeBasedDiscountService implements DiscountCalculatorInterface {
+export class VolumeBasedDiscountService implements PriceCalculatorInterface {
   public calculatePerOrder(input: OrderCalculationsParams): number {
     const orderVolume = input.products.reduce(
       (currentVolume, { quantity: productQuantity }) =>

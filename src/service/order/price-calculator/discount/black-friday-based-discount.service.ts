@@ -1,10 +1,10 @@
 import { OrderCalculationsParams } from '../type';
-import { DiscountCalculatorInterface } from './discount-calculator.interface';
+import { PriceCalculatorInterface } from '../price-calculator.interface';
 
 const DISCOUNT_VALUE = 0.75;
 
 export class BlackFridayBasedDiscountService
-  implements DiscountCalculatorInterface
+  implements PriceCalculatorInterface
 {
   public calculatePerOrder(input: OrderCalculationsParams): number {
     if (!this.isTodayBlackFriday()) {

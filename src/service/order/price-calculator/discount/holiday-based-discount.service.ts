@@ -1,6 +1,6 @@
 import { ProductCategory } from '../../../../shared/product-category.enum';
 import { inject, injectable } from 'tsyringe';
-import { DiscountCalculatorInterface } from './discount-calculator.interface';
+import { PriceCalculatorInterface } from '../price-calculator.interface';
 import { OrderCalculationsParams } from '../type';
 import { BankHolidaysInterface } from '../../../bank-holidays/bank-holidays.interface';
 
@@ -12,9 +12,7 @@ const DISCOUNTED_CATEGORIES = [
 const DISCOUNT_VALUE = 0.85;
 
 @injectable()
-export class HolidayBasedDiscountService
-  implements DiscountCalculatorInterface
-{
+export class HolidayBasedDiscountService implements PriceCalculatorInterface {
   constructor(
     @inject('BankHolidays')
     private readonly bankHolidaysService: BankHolidaysInterface,

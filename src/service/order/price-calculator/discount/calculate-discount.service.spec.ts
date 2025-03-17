@@ -4,6 +4,7 @@ import { HolidayBasedDiscountService } from './holiday-based-discount.service';
 import { BlackFridayBasedDiscountService } from './black-friday-based-discount.service';
 import { container } from 'tsyringe';
 import { OrderCalculationsParams } from '../type';
+import { Order } from '../../../../models/order.model';
 
 jest.mock('./volume-based-discount.service');
 jest.mock('./holiday-based-discount.service');
@@ -38,6 +39,7 @@ describe(CalculateDiscountService.name, () => {
     const input: OrderCalculationsParams = {
       products: [],
       calculatedBasePrice: 10000,
+      order: {} as Order,
     };
 
     volumeBasedDiscountService.calculatePerOrder.mockReturnValue(900);
@@ -57,6 +59,7 @@ describe(CalculateDiscountService.name, () => {
     const input: OrderCalculationsParams = {
       products: [],
       calculatedBasePrice: 10000,
+      order: {} as Order,
     };
 
     volumeBasedDiscountService.calculatePerOrder.mockReturnValue(900);

@@ -1,6 +1,7 @@
 import { BlackFridayBasedDiscountService } from './black-friday-based-discount.service';
 import { Product } from '../../../../models/product.model';
 import { OrderCalculationsParams } from '../type';
+import { Order } from '../../../../models/order.model';
 
 describe(BlackFridayBasedDiscountService.name, () => {
   afterEach(() => {
@@ -17,6 +18,7 @@ describe(BlackFridayBasedDiscountService.name, () => {
         },
       ],
       calculatedBasePrice: 50,
+      order: {} as Order,
     };
     const service = new BlackFridayBasedDiscountService();
 
@@ -35,6 +37,7 @@ describe(BlackFridayBasedDiscountService.name, () => {
         },
       ],
       calculatedBasePrice: 50,
+      order: {} as Order,
     };
 
     const service = new BlackFridayBasedDiscountService();
