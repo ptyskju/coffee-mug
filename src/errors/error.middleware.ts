@@ -27,7 +27,7 @@ export function validate(checks: ValidationChain[]) {
         return next();
       }
 
-      res.status(422).json({ errors: errors.array() }).send();
+      res.status(422).json({ error: errors.array() }).send();
     },
   ];
 }

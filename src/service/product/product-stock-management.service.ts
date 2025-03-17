@@ -1,9 +1,9 @@
 import { ProductRepository } from '../../repositories/product.repository';
-import { ForbiddenError } from '../../errors/forbidden.error';
 import { NotFoundError } from '../../errors/not-found.error';
 import { injectable } from 'tsyringe';
 import { Product } from '../../models/product.model';
 import { ObjectId } from 'mongodb';
+import { UnprocessableEntityError } from '../../errors/unprocessable-entity.error';
 
 type ProductStockManagementInput = {
   product: ObjectId | Product;
@@ -17,33 +17,33 @@ export class ProductStockManagementService {
   public async increaseStock({
     product,
     stockChange,
-  }: ProductStockManagementInput): Promise<void> {
+  }: ProductStockManagementInput): Promise<Product> {
     if (stockChange < 0) {
-      throw new ForbiddenError('Stock change cannot be negative');
+      throw new UnprocessableEntityError('Stock change cannot be negative');
     }
 
     product = await this.getProduct(product);
 
     product.stock += stockChange;
-    await product.save();
+    return product.save();
   }
 
   public async decreaseStock({
     product,
     stockChange,
-  }: ProductStockManagementInput): Promise<void> {
+  }: ProductStockManagementInput): Promise<Product> {
     product = await this.getProduct(product);
 
     stockChange = Math.abs(stockChange);
 
     if (product.stock - stockChange < 0) {
-      throw new ForbiddenError(
+      throw new UnprocessableEntityError(
         'Stock decrease value is bigger than existing product stock',
       );
     }
 
     product.stock -= stockChange;
-    await product.save();
+    return product.save();
   }
 
   private async getProduct(

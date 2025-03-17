@@ -73,12 +73,12 @@ router.post(
     const restockValue = req.body.restock;
 
     try {
-      await increaseProductStockHandler.execute({
+      const product = await increaseProductStockHandler.execute({
         productId: new ObjectId(id),
         stockChange: restockValue,
       });
 
-      res.status(204).send();
+      res.status(200).send(product);
     } catch (error) {
       next(error);
     }
@@ -97,12 +97,12 @@ router.post(
     const restockValue = req.body.restock;
 
     try {
-      await decreaseProductStockHandler.execute({
+      const product = await decreaseProductStockHandler.execute({
         productId: new ObjectId(id),
         stockChange: restockValue,
       });
 
-      res.status(204).send();
+      res.status(200).send(product);
     } catch (error) {
       next(error);
     }

@@ -4,9 +4,9 @@ import { ProductStockManagementCommand } from '../../commands/product-stock-mana
 import { ObjectId } from 'mongodb';
 import { ProductModel } from '../../models/product.model';
 import { NotFoundError } from '../../errors/not-found.error';
-import { ForbiddenError } from '../../errors/forbidden.error';
 import { NoErrorThrownError } from '../../test/utils/error';
 import { ProductStockManagementService } from './product-stock-management.service';
+import { UnprocessableEntityError } from '../../errors/unprocessable-entity.error';
 
 jest.mock('../../repositories/product.repository');
 jest.mock('../../models/product.model');
@@ -75,8 +75,8 @@ describe(ProductStockManagementService.name, () => {
 
         throw new NoErrorThrownError();
       } catch (error) {
-        expect(error).toBeInstanceOf(ForbiddenError);
-        expect((error as ForbiddenError).message).toEqual(
+        expect(error).toBeInstanceOf(UnprocessableEntityError);
+        expect((error as UnprocessableEntityError).message).toEqual(
           'Stock change cannot be negative',
         );
       }
@@ -140,8 +140,8 @@ describe(ProductStockManagementService.name, () => {
 
         throw new NoErrorThrownError();
       } catch (error) {
-        expect(error).toBeInstanceOf(ForbiddenError);
-        expect((error as ForbiddenError).message).toEqual(
+        expect(error).toBeInstanceOf(UnprocessableEntityError);
+        expect((error as UnprocessableEntityError).message).toEqual(
           'Stock decrease value is bigger than existing product stock',
         );
       }
