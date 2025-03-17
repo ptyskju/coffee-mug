@@ -12,14 +12,14 @@ export interface Order extends Document<ObjectId> {
   }[];
   pricePerOrder: number;
   priceAfterDiscount: number;
-  discountRule?: string;
+  finalPrice: number;
 }
 
 const OrderSchema = new mongoose.Schema({
   customerId: { type: String, required: true },
   pricePerOrder: { type: Number, required: true, min: 0 },
   priceAfterDiscount: { type: Number, required: true, min: 0 },
-  discountRule: { type: String, required: false },
+  finalPrice: { type: Number, required: true, min: 0 },
   location: {
     type: String,
     required: true,
