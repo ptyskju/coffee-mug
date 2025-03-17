@@ -8,6 +8,9 @@ import { CreateOrderHandler } from '../handlers/order/create-order.handler';
 import { Order } from '../models/order.model';
 import { CreateOrderCommand } from '../commands/create-order.command';
 import { createOrderValidator } from '../validators/order.validators';
+import { PolishBankHolidaysService } from '../service/bank-holidays/polish-bank-holidays.service';
+
+container.register('BankHolidays', { useClass: PolishBankHolidaysService });
 
 const getOrdersHandler = container.resolve(GetOrdersHandler);
 const createOrderHandler = container.resolve(CreateOrderHandler);

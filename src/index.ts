@@ -5,8 +5,6 @@ import { connectDB } from './config/database';
 import productRoutes from './routes/product.routes';
 import orderRoutes from './routes/order.routes';
 import { errorHandler } from './errors/error.middleware';
-import { container } from 'tsyringe';
-import { PolishBankHolidaysService } from './service/bank-holidays/polish-bank-holidays.service';
 
 const app = express();
 app.use(express.json());
@@ -19,8 +17,6 @@ app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
 
 app.use(errorHandler);
-
-container.register('BankHolidays', { useClass: PolishBankHolidaysService });
 
 async function init() {
   try {

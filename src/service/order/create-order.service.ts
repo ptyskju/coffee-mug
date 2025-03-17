@@ -3,15 +3,11 @@ import { OrderRepository } from '../../repositories/order.repository';
 import { CreateOrderCommand } from '../../commands/create-order.command';
 import { Order, OrderModel } from '../../models/order.model';
 import { ProductRepository } from '../../repositories/product.repository';
-import { Product, ProductModel } from '../../models/product.model';
 import { NotFoundError } from '../../errors/not-found.error';
 import { ObjectId } from 'mongodb';
 import { ProductStockManagementService } from '../product/product-stock-management.service';
-
-type ProductPerOrder = {
-  product: Product;
-  quantity: number;
-};
+import { CalculatePriceService } from './price-calculator/calculate-price.service';
+import { OrderCalculationProductDetails } from './price-calculator/type';
 
 @injectable()
 export class CreateOrderService {
@@ -19,13 +15,17 @@ export class CreateOrderService {
     private readonly orderRepository: OrderRepository,
     private readonly productRepository: ProductRepository,
     private readonly productStockManagement: ProductStockManagementService,
+    private readonly calculatePriceService: CalculatePriceService,
   ) {}
 
   public async createOrder(
     createOrderCommand: CreateOrderCommand,
   ): Promise<Order> {
-    const newOrder = new OrderModel();
-    const productsPerOrder: ProductPerOrder[] = [];
+    const newOrder = new OrderModel({
+      customerId: createOrderCommand.customerId,
+      location: createOrderCommand.location,
+    });
+    const productsPerOrder: OrderCalculationProductDetails[] = [];
 
     for (const singleOrderedProduct of createOrderCommand.orderedProducts) {
       const fetchedProduct = await this.productRepository.findOne(
@@ -50,30 +50,34 @@ export class CreateOrderService {
       });
     }
 
+    this.updatePrices(newOrder, productsPerOrder);
     await this.changeStock(productsPerOrder);
-
     return await this.orderRepository.create(newOrder);
   }
 
   private async changeStock(
-    productsPerOrder: ProductPerOrder[],
+    productsPerOrder: OrderCalculationProductDetails[],
   ): Promise<void> {
-    const session = await ProductModel.startSession();
-    session.startTransaction();
-
-    try {
-      for (const { product, quantity } of productsPerOrder) {
-        await this.productStockManagement.decreaseStock({
-          product,
-          stockChange: quantity,
-        });
-      }
-      await session.commitTransaction();
-      await session.endSession();
-    } catch (error) {
-      await session.abortTransaction();
-      await session.endSession();
-      throw error;
+    for (const { product, quantity } of productsPerOrder) {
+      await this.productStockManagement.decreaseStock({
+        product,
+        stockChange: quantity,
+      });
     }
+  }
+
+  private updatePrices(
+    newOrder: Order,
+    productsPerOrder: OrderCalculationProductDetails[],
+  ): void {
+    const { pricePerOrder, priceAfterDiscount, finalPrice } =
+      this.calculatePriceService.calculatePricePerOrder({
+        order: newOrder,
+        products: productsPerOrder,
+      });
+
+    newOrder.pricePerOrder = pricePerOrder;
+    newOrder.priceAfterDiscount = priceAfterDiscount;
+    newOrder.finalPrice = finalPrice;
   }
 }
