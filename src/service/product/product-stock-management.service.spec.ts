@@ -37,7 +37,10 @@ describe(ProductStockManagementService.name, () => {
 
       productRepository.findOne.mockResolvedValue(product);
 
-      await handler.increaseStock(handlerInput);
+      await handler.increaseStock({
+        product: handlerInput.productId,
+        stockChange: handlerInput.stockChange,
+      });
 
       expect(product.stock).toEqual(10);
       expect(product.save).toBeCalledTimes(1);
@@ -50,9 +53,12 @@ describe(ProductStockManagementService.name, () => {
       };
 
       productRepository.findOne.mockResolvedValue(null);
-      await expect(handler.increaseStock(handlerInput)).rejects.toBeInstanceOf(
-        NotFoundError,
-      );
+      await expect(
+        handler.increaseStock({
+          product: handlerInput.productId,
+          stockChange: handlerInput.stockChange,
+        }),
+      ).rejects.toBeInstanceOf(NotFoundError);
     });
 
     it('should throw error when stock change is negative', async () => {
@@ -62,7 +68,10 @@ describe(ProductStockManagementService.name, () => {
       };
 
       try {
-        await handler.increaseStock(handlerInput);
+        await handler.increaseStock({
+          product: handlerInput.productId,
+          stockChange: handlerInput.stockChange,
+        });
 
         throw new NoErrorThrownError();
       } catch (error) {
@@ -88,7 +97,10 @@ describe(ProductStockManagementService.name, () => {
 
       productRepository.findOne.mockResolvedValue(product);
 
-      await handler.decreaseStock(handlerInput);
+      await handler.decreaseStock({
+        product: handlerInput.productId,
+        stockChange: handlerInput.stockChange,
+      });
 
       expect(product.stock).toEqual(90);
       expect(product.save).toBeCalledTimes(1);
@@ -101,9 +113,12 @@ describe(ProductStockManagementService.name, () => {
       };
 
       productRepository.findOne.mockResolvedValue(null);
-      await expect(handler.decreaseStock(handlerInput)).rejects.toBeInstanceOf(
-        NotFoundError,
-      );
+      await expect(
+        handler.decreaseStock({
+          product: handlerInput.productId,
+          stockChange: handlerInput.stockChange,
+        }),
+      ).rejects.toBeInstanceOf(NotFoundError);
     });
 
     it('should throw error when stock will be negative after change', async () => {
@@ -118,7 +133,10 @@ describe(ProductStockManagementService.name, () => {
       productRepository.findOne.mockResolvedValue(product);
 
       try {
-        await handler.decreaseStock(handlerInput);
+        await handler.decreaseStock({
+          product: handlerInput.productId,
+          stockChange: handlerInput.stockChange,
+        });
 
         throw new NoErrorThrownError();
       } catch (error) {
@@ -143,7 +161,10 @@ describe(ProductStockManagementService.name, () => {
 
       productRepository.findOne.mockResolvedValue(product);
 
-      await handler.decreaseStock(handlerInput);
+      await handler.decreaseStock({
+        product: handlerInput.productId,
+        stockChange: handlerInput.stockChange,
+      });
 
       expect(product.stock).toEqual(90);
       expect(product.save).toBeCalledTimes(1);
