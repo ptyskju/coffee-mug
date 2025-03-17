@@ -54,7 +54,7 @@ router.post(
   ) => {
     try {
       const product = await createProductHandler.execute(req.body);
-      res.status(200).json(product);
+      res.status(201).json(product);
     } catch (error) {
       next(error);
     }
@@ -78,7 +78,7 @@ router.post(
         stockChange: restockValue,
       });
 
-      res.status(200).send();
+      res.status(204).send();
     } catch (error) {
       next(error);
     }
@@ -102,7 +102,7 @@ router.post(
         stockChange: restockValue,
       });
 
-      res.status(200).send();
+      res.status(204).send();
     } catch (error) {
       next(error);
     }
