@@ -6,16 +6,12 @@ const DISCOUNT_VALUE = 0.75;
 export class BlackFridayBasedDiscountService
   implements DiscountCalculatorInterface
 {
-  public calculatePerOrder(input: OrderCalculationsParams): number | undefined {
+  public calculatePerOrder(input: OrderCalculationsParams): number {
     if (!this.isTodayBlackFriday()) {
-      return undefined;
+      return input.calculatedBasePrice;
     }
 
-    return (
-      input.reduce((currentPrice, { quantity: productQuantity, product }) => {
-        return currentPrice + product.price * productQuantity;
-      }, 0) * DISCOUNT_VALUE
-    );
+    return input.calculatedBasePrice * DISCOUNT_VALUE;
   }
 
   private isTodayBlackFriday(): boolean {

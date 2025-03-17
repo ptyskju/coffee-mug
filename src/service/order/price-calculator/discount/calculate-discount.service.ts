@@ -21,17 +21,13 @@ export class CalculateDiscountService implements DiscountCalculatorInterface {
     ];
   }
 
-  public calculatePerOrder(input: OrderCalculationsParams): number | undefined {
-    let lowestPrice = undefined;
+  public calculatePerOrder(input: OrderCalculationsParams): number {
+    let lowestPrice = input.calculatedBasePrice;
 
     for (const discountService of this.discountServices) {
       const calculatedPrice = discountService.calculatePerOrder(input);
 
-      if (calculatedPrice === undefined) {
-        continue;
-      }
-
-      if (calculatedPrice < (lowestPrice ?? 0)) {
+      if (calculatedPrice < lowestPrice) {
         lowestPrice = calculatedPrice;
       }
     }

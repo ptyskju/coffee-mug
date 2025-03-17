@@ -20,12 +20,12 @@ export class HolidayBasedDiscountService
     private readonly bankHolidaysService: BankHolidaysInterface,
   ) {}
 
-  public calculatePerOrder(input: OrderCalculationsParams): number | undefined {
+  public calculatePerOrder(input: OrderCalculationsParams): number {
     if (!this.bankHolidaysService.isTodayBankHoliday()) {
-      return undefined;
+      return input.calculatedBasePrice;
     }
 
-    return input.reduce(
+    return input.products.reduce(
       (currentPrice, { quantity: productQuantity, product }) => {
         let productPricePerQuantity = product.price * productQuantity;
         if (DISCOUNTED_CATEGORIES.includes(product.category)) {
