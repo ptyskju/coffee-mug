@@ -8,8 +8,6 @@ export function errorHandler(
   res: Response,
   next: NextFunction,
 ) {
-  console.error(err);
-
   if (err instanceof ApplicationError) {
     res.status(err.statusCode).json({ error: err.message });
   } else {
